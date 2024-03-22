@@ -2,6 +2,19 @@ import Form from '@/app/ui/invoices/edit-form';
 import Breadcrumbs from '@/app/ui/invoices/breadcrumbs';
 import { fetchCustomers, fetchInvoiceById } from '@/app/lib/data';
 import { notFound } from 'next/navigation';
+import { Metadata, ResolvingMetadata } from 'next';
+
+type Props = {
+  params: { id: string };
+};
+
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const id = params.id;
+  const invoice = await fetchInvoiceById(id);
+  return {
+    title: `Invoice: ${invoice.id}`,
+  };
+}
 
 export default async function EditPage({ params }: { params: { id: string } }) {
   const id = params.id;
