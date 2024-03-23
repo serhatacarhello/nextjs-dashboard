@@ -10,7 +10,7 @@ import {
 import Link from 'next/link';
 import { Button } from '@/app/ui/button';
 import { updateInvoice } from '../../lib/actions';
-import { useFormState } from 'react-dom';
+import { useFormState, useFormStatus } from 'react-dom';
 
 export default function EditInvoiceForm({
   invoice,
@@ -22,6 +22,7 @@ export default function EditInvoiceForm({
   const initialState = { message: null, errors: {} };
   const updateInvoiceWithId = updateInvoice.bind(null, invoice.id);
   const [state, dispatch] = useFormState(updateInvoiceWithId, initialState);
+  const { pending } = useFormStatus();
 
   return (
     <form action={dispatch} aria-describedby="form-error">
@@ -155,7 +156,9 @@ export default function EditInvoiceForm({
         >
           Cancel
         </Link>
-        <Button type="submit">Edit Invoice</Button>
+        <Button type="submit" aria-disabled={pending}>
+          Edit Invoice
+        </Button>
       </div>
     </form>
   );
